@@ -11,7 +11,13 @@ from config import global_config
 class Timer(object):
     def __init__(self, sleep_interval=0.5):
         # '2018-09-28 22:45:50.000'
-        self.buy_time = datetime.strptime(global_config.getRaw('config','buy_time'), "%Y-%m-%d %H:%M:%S.%f")
+        # buy_time = 2020-12-22 09:59:59.500
+        buy_time_everyday = global_config.getRaw('config', 'buy_time').__str__()
+        localtime = time.localtime(time.time())
+        self.buy_time = datetime.strptime(
+            localtime.tm_year.__str__() + '-' + localtime.tm_mon.__str__() + '-' + localtime.tm_mday.__str__()
+            + ' ' + buy_time_everyday,
+            "%Y-%m-%d %H:%M:%S.%f")
         self.buy_time_ms = int(time.mktime(self.buy_time.timetuple()) * 1000.0 + self.buy_time.microsecond / 1000)
         self.sleep_interval = sleep_interval
 
